@@ -34,4 +34,5 @@ runs:
 
 branding:
   icon: ./WebSentry.png
+  color: 'gray-dark'
 
