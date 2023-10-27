@@ -1,0 +1,21 @@
+name: Check Website Health
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+
+jobs:
+  check-website-health:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.x
+
+      - name: Check Website Health
+        run: go run main.go
