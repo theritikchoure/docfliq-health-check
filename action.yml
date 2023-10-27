@@ -33,6 +33,6 @@ runs:
       run: go run main.go ${{ inputs.website-url }} ${{ inputs.max-retries }} ${{ inputs.retry-interval }} ${{ inputs.request-timeout }}
 
 branding:
-  icon: ./WebSentry.png
+  icon: 'activity'
   color: 'gray-dark'
 
