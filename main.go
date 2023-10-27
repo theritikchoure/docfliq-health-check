@@ -14,7 +14,7 @@ import (
 
 var (
 	websiteURL     = ""               // Replace with your website URL
-	maxRetries     = 0                // Maximum number of retries
+	maxRetries     = 3                // Maximum number of retries
 	retryInterval  = 5 * time.Second  // Time to wait between retries
 	requestTimeout = 10 * time.Second // Timeout for HTTP requests
 )
