@@ -1,0 +1,14 @@
+PackageIdentifier: Microsoft.WindowsTerminal
+PackageVersion: 1.6.10571.0
+PackageLocale: en-US
+Publisher: RitikChourasiya
+PackageName: Websentry
+License: MIT
+ShortDescription: Check the health of a website and report status.
+Installers: 
+ - Architecture: x64
+   InstallerType: exe
+   InstallerUrl: websentry.exe
+   InstallerSha256: 092aa89b1881e058d31b1a8d88f31bb298b5810afbba25c5cb341cfa4904d843
+ManifestType: singleton
+ManifestVersion: 1.0.0

@@ -1,4 +1,4 @@
-module github.com/theritikchoure/docfliq-health-check
+module github.com/theritikchoure/websentry
 
 go 1.21.0
 

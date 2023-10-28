@@ -1,75 +1,66 @@
 package main
 
 import (
+	"flag"
 	"fmt"
-	"log"
 	"net/http"
 	"os"
-	"strconv"
 	"strings"
 	"time"
 
 	"github.com/theritikchoure/logx"
 )
 
+const version = "v1.2.0"
+
 var (
-	websiteURL     = ""               // Replace with your website URL
-	maxRetries     = 3                // Maximum number of retries
-	retryInterval  = 5 * time.Second  // Time to wait between retries
-	requestTimeout = 10 * time.Second // Timeout for HTTP requests
+	websiteURL string
+	maxRetries int
 )
 
-var options = make(map[string]string)
+var (
+	retryInterval  time.Duration
+	requestTimeout time.Duration
+)
 
 func main() {
+	helpFlag := flag.Bool("help", false, "Display usage information")
+	versionFlag := flag.Bool("version", false, "Print the program version")
+	websites := flag.String("site", "", "Comma-separated list of website URLs")
+	maxRetriesValue := flag.Int("maxretries", 3, "Maximum number of retries")
+	retryIntervalValue := flag.Duration("retryinterval", 5*time.Second, "Time to wait between retries")
+	requestTimeoutValue := flag.Duration("requesttimeout", 10*time.Second, "Timeout for HTTP requests")
 
-	if len(os.Args) <= 2 {
-		log.Fatalf("Please specify a valid arguments")
+	flag.Parse()
+
+	if *helpFlag {
+		DisplayUsage()
 	}
 
-	for i := 1; i < len(os.Args); i += 2 {
-		key := os.Args[i]
-
-		if i+1 >= len(os.Args) {
-			log.Fatal("Invalid arguments, please specify value for ", key)
-		}
-
-		value := os.Args[i+1]
-		if strings.Contains(strings.ToLower(value), "--") {
-			log.Fatal("Please specify a valid argument for ", key)
-		}
-
-		options[key] = value
+	if *versionFlag {
+		displayVersion()
 	}
 
-	if options["--site"] != "" {
-		websiteURL = options["--site"]
-
-		if !strings.Contains(strings.ToLower(websiteURL), "http") {
-			websiteURL = "https://" + websiteURL
-		}
-	} else {
-		log.Fatal("Site is not specified")
+	if *websites == "" {
+		logx.Log("No websites specified. Example commands:", logx.FGRED, "")
+		logx.Log("$ websentry -site https://example.com -maxretries 5 -retryinterval 10s -requesttimeout 15s", "", "")
+		logx.Log("$ websentry -site https://example.com,https://example2.com,https://example3.com -maxretries 5 -retryinterval 10s -requesttimeout 15s", "", "")
+		return
 	}
 
-	if options["--maxretry"] != "" {
-		retryStr := options["--maxretry"]
-		maxRetries, _ = strconv.Atoi(retryStr)
+	maxRetries = *maxRetriesValue
+	retryInterval = *retryIntervalValue
+	requestTimeout = *requestTimeoutValue
+
+	websiteURLs := strings.Split(*websites, ",")
+
+	for _, url := range websiteURLs {
+		websiteURL = url
+		checkHealth()
 	}
+}
 
-	if options["--retryin"] != "" {
-		retryInStr, found := options["--retryin"]
-		if found {
-			retryIn, err := strconv.Atoi(retryInStr)
-
-			if err == nil {
-				retryInterval = time.Duration(retryIn) * time.Second
-			} else {
-				log.Fatal("Error converting '--retryin' to an integer: \n", err)
-			}
-		}
-	}
-
+func checkHealth() {
 	logx.Logf("----------------------------------------", logx.FGMAGENTA, "")
 	logx.Logf("Checking the health of %s...", "", "", websiteURL)
 	logx.Logf("----------------------------------------", logx.FGMAGENTA, "")
@@ -91,7 +82,6 @@ func main() {
 				os.Exit(1)
 			}
 		} else {
-
 			sslEnabled := response.Header.Get("Strict-Transport-Security") != ""
 			responseTime := time.Since(startTime)
 			contentLength := response.ContentLength
@@ -100,7 +90,6 @@ func main() {
 			contentType := response.Header.Get("Content-Type")
 
 			logx.Logf("✅ Website %s is up and running\n", "", "", websiteURL)
-
 			logx.Logf("⭐ Response Time: %v", logx.FGGREEN, "", responseTime)
 			logx.Logf("⭐ Content Length: %d bytes", logx.FGGREEN, "", contentLength)
 			logx.Logf("⭐ Redirect URL: %s", logx.FGGREEN, "", redirectURL)
@@ -110,4 +99,18 @@ func main() {
 			break
 		}
 	}
+}
+
+func displayUsage() {
+	fmt.Println("Websentry - Check the health of a website and report status")
+	fmt.Println("Usage:")
+	fmt.Println("websentry [options]")
+	fmt.Println("\nOptions:")
+	flag.PrintDefaults()
+	os.Exit(0)
+}
+
+func displayVersion() {
+	fmt.Printf("Websentry %s\n", version)
+	os.Exit(0)
 }
