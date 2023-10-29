@@ -1,8 +1,6 @@
 name: Website Health Check
 
-on:
-  schedule:
-    - cron: '*/5 * * * *'  # Run every 5 minutes (adjust the cron schedule as needed)
+on: push
 
 jobs:
   health-check:
