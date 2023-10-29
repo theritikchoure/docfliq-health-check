@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check Website Health
-        uses: theritikchoure/websentry@v1.2.0
+        uses: theritikchoure/websentry@v1.3.0
         with:
           website-url: 'https://example.com'
           max-retries: 3
