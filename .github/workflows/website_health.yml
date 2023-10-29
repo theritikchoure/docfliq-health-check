@@ -18,4 +18,4 @@ jobs:
           go-version: 1.x
 
       - name: Check Website Health
-        run: go run main.go --site docfliq.com --maxretry 6
+        run: go run main.go --site docfliq.com --maxretries 6

@@ -30,7 +30,7 @@ runs:
       uses: actions/checkout@v2
 
     - name: Run Websentry
-      run: go run main.go ${{ inputs.website-url }} ${{ inputs.max-retries }} ${{ inputs.retry-interval }} ${{ inputs.request-timeout }}
+      run: go run main.go --site ${{ inputs.website-url }} --maxretries ${{ inputs.max-retries }} --retryinterval ${{ inputs.retry-interval }} --requesttimeout ${{ inputs.request-timeout }}
 
 branding:
   icon: 'activity'
