@@ -27,16 +27,25 @@ outputs:
     description: 'The health status of the website (up or down)'
 
 runs:
-  using: 'docker'
-  image: 'golang:1.16'
-  command: ['/bin/sh', '-c']
-  args:
-    - |
-      go get -u github.com/theritikchoure/logx
-      go build -o /github/workspace/websentry main.go
-      chmod +x /github/workspace/websentry
-      /github/workspace/websentry \
-        -site ${{ inputs.website-url }} \
-        -maxretries ${{ inputs.max-retries }} \
-        -retryinterval ${{ inputs.retry-interval }} \
-        -requesttimeout ${{ inputs.request-timeout }}
+  using: 'composite'
+  steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Setup Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: '1.16'  # Use the Go version you need
+
+    - name: Build Websentry
+      run: go build -o websentry main.go
+      working-directory: ${{ github.workspace }}
+
+    - name: Run Websentry
+      run: |
+        ./websentry \
+          -site ${{ inputs.website-url }} \
+          -maxretries ${{ inputs.max-retries }} \
+          -retryinterval ${{ inputs.retry-interval }} \
+          -requesttimeout ${{ inputs.request-timeout }}
+      working-directory: ${{ github.workspace }}
