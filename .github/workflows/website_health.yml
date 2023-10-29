@@ -1,15 +1,19 @@
-name: Website Health Check
+name: Check Website Health
 
 on: push
 
 jobs:
-  health-check:
+  check-website-health:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Check Website Health
-        uses: theritikchoure/websentry@main
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
         with:
-          website-url: 'https://example.com'
-          max-retries: 3
-          retry-interval: 5
-          request-timeout: 10
+          go-version: 1.x
+
+      - name: Check Website Health
+        run: go run main.go --site docfliq.com --maxretries 6
