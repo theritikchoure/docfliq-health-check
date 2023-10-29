@@ -34,7 +34,7 @@ func main() {
 	flag.Parse()
 
 	if *helpFlag {
-		DisplayUsage()
+		displayUsage()
 	}
 
 	if *versionFlag {
@@ -55,7 +55,11 @@ func main() {
 	websiteURLs := strings.Split(*websites, ",")
 
 	for _, url := range websiteURLs {
-		websiteURL = url
+		if !strings.Contains(strings.ToLower(url), "http") {
+			websiteURL = "https://" + url
+		} else {
+			websiteURL = url
+		}
 		checkHealth()
 	}
 }
