@@ -28,10 +28,9 @@ outputs:
 
 runs:
   using: 'docker'
-  image: 'docker://golang:1.20'
+  image: 'golang:1.16'
+  command: ['/bin/sh', '-c']
   args:
-    - /bin/sh
-    - -c
     - |
       go get -u github.com/theritikchoure/logx
       go build -o /github/workspace/websentry main.go
