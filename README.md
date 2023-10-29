@@ -8,6 +8,8 @@
   <strong>Check the health of your websites and receive instant status reports with Websentry!</strong>
 </p>
 
+[![Website Health Check](https://github.com/theritikchoure/websentry/actions/workflows/website_health.yml/badge.svg)](https://github.com/theritikchoure/websentry/actions/workflows/website_health.yml)
+
 ---
 
 ## Table of Contents
@@ -19,6 +21,7 @@
   - [Installation](#installation)
 - [Usage](#usage)
 - [Configuration](#configuration)
+- [Inputs](#inputs)
 - [Example Workflow](#example-workflow)
 - [Contributing](#contributing)
 - [License](#license)
@@ -85,6 +88,15 @@ You can configure Websentry by specifying the following input parameters in your
 - **max-retries**: The maximum number of retries for checking the website's health.
 - **retry-interval**: The time interval between retry attempts.
 - **request-timeout**: The timeout for HTTP requests.
+
+## Inputs
+| Parameter      | Description                                      | Required | Default   |
+| -------------- | ----------------------------------------------- | -------- | --------- |
+| website-url    | The URL of the website to check (e.g., example.com) | true     | -         |
+| max-retries    | Maximum number of retries (default: 3)          | false    | '3'       |
+| retry-interval | Time to wait between retries in seconds (default: 5) | false    | '5'       |
+| request-timeout | Request timeout in seconds (default: 10)      | false    | '10'      |
+
 
 ## Example Workflow
 Here's an example GitHub Actions workflow that uses Websentry to check the health of a website:
