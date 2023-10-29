@@ -13,26 +13,31 @@ inputs:
     description: 'Time to wait between retries in seconds (default: 5)'
     required: false
     default: '5'
+  request-timeout:
+    description: 'Request timeout in seconds (default: 10)'
+    required: false
+    default: '10'
+
+branding:
+  icon: 'activity'
+  color: 'gray-dark'
 
 outputs:
   health-status:
     description: 'The health status of the website (up or down)'
 
 runs:
-  using: 'composite'
-  steps:
-    - name: Setup Go
-      uses: actions/setup-go@v2
-      with:
-        go-version: '1.16' # Use the Go version you need
-
-    - name: Check out code
-      uses: actions/checkout@v2
-
-    - name: Run Websentry
-      run: go run main.go --site ${{ inputs.website-url }} --maxretries ${{ inputs.max-retries }} --retryinterval ${{ inputs.retry-interval }} --requesttimeout ${{ inputs.request-timeout }}
-
-branding:
-  icon: 'activity'
-  color: 'gray-dark'
-
+  using: 'docker'
+  image: 'docker://golang:1.16'
+  args:
+    - /bin/sh
+    - -c
+    - |
+      go get -u github.com/theritikchoure/logx
+      go build -o /github/workspace/websentry main.go
+      chmod +x /github/workspace/websentry
+      /github/workspace/websentry \
+        -site ${{ inputs.website-url }} \
+        -maxretries ${{ inputs.max-retries }} \
+        -retryinterval ${{ inputs.retry-interval }} \
+        -requesttimeout ${{ inputs.request-timeout }}
