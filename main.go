@@ -7,8 +7,6 @@ import (
 	"os"
 	"strings"
 	"time"
-
-	"github.com/theritikchoure/logx"
 )
 
 const version = "v1.2.0"
@@ -42,9 +40,9 @@ func main() {
 	}
 
 	if *websites == "" {
-		logx.Log("No websites specified. Example commands:", logx.FGRED, "")
-		logx.Log("$ websentry -site https://example.com -maxretries 5 -retryinterval 10s -requesttimeout 15s", "", "")
-		logx.Log("$ websentry -site https://example.com,https://example2.com,https://example3.com -maxretries 5 -retryinterval 10s -requesttimeout 15s", "", "")
+		fmt.Println("No websites specified. Example commands:")
+		fmt.Println("$ websentry -site https://example.com -maxretries 5 -retryinterval 10s -requesttimeout 15s")
+		fmt.Println("$ websentry -site https://example.com,https://example2.com,https://example3.com -maxretries 5 -retryinterval 10s -requesttimeout 15s")
 		return
 	}
 
@@ -65,9 +63,9 @@ func main() {
 }
 
 func checkHealth() {
-	logx.Logf("----------------------------------------", logx.FGMAGENTA, "")
-	logx.Logf("Checking the health of %s...", "", "", websiteURL)
-	logx.Logf("----------------------------------------", logx.FGMAGENTA, "")
+	fmt.Println("----------------------------------------")
+	fmt.Printf("Checking the health of %s...\n", websiteURL)
+	fmt.Println("----------------------------------------")
 
 	client := &http.Client{
 		Timeout: requestTimeout,
@@ -77,12 +75,12 @@ func checkHealth() {
 		startTime := time.Now()
 		response, err := client.Get(websiteURL)
 		if err != nil || response.StatusCode != http.StatusOK {
-			logx.Logf("Attempt %d: Website %s is down or not responding.", logx.FGRED, "", i+1, websiteURL)
+			fmt.Printf("Attempt %d: Website %s is down or not responding.\n", i+1, websiteURL)
 			if i < maxRetries-1 {
 				fmt.Printf("Retrying in %v...\n", retryInterval)
 				time.Sleep(retryInterval)
 			} else {
-				fmt.Printf("Max retries reached. Website is still down.\n")
+				fmt.Println("Max retries reached. Website is still down.")
 				os.Exit(1)
 			}
 		} else {
@@ -93,13 +91,13 @@ func checkHealth() {
 			serverHeader := response.Header.Get("Server")
 			contentType := response.Header.Get("Content-Type")
 
-			logx.Logf("✅ Website %s is up and running\n", "", "", websiteURL)
-			logx.Logf("⭐ Response Time: %v", logx.FGGREEN, "", responseTime)
-			logx.Logf("⭐ Content Length: %d bytes", logx.FGGREEN, "", contentLength)
-			logx.Logf("⭐ Redirect URL: %s", logx.FGGREEN, "", redirectURL)
-			logx.Logf("⭐ Server: %s", logx.FGGREEN, "", serverHeader)
-			logx.Logf("⭐ Content Type: %s", logx.FGGREEN, "", contentType)
-			logx.Logf("⭐ SSL enabled = %t", logx.FGGREEN, "", sslEnabled)
+			fmt.Println("✅ Website", websiteURL, "is up and running")
+			fmt.Printf("⭐ Response Time: %v\n", responseTime)
+			fmt.Printf("⭐ Content Length: %d bytes\n", contentLength)
+			fmt.Printf("⭐ Redirect URL: %s\n", redirectURL)
+			fmt.Printf("⭐ Server: %s\n", serverHeader)
+			fmt.Printf("⭐ Content Type: %s\n", contentType)
+			fmt.Printf("⭐ SSL enabled = %t\n", sslEnabled)
 			break
 		}
 	}

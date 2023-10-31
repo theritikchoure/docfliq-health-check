@@ -1,19 +1,9 @@
-name: Check Website Health
-
 on: push
 
 jobs:
-  check-website-health:
+  license-check:
     runs-on: ubuntu-latest
-
+    name: License Check
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Go
-        uses: actions/setup-go@v2
-        with:
-          go-version: 1.x
-
-      - name: Check Website Health
-        run: go run main.go --site docfliq.com --maxretries 6
+      - uses: actions/checkout@v2
+      - uses: theritikchoure/websentry@main
