@@ -22,7 +22,6 @@
 - [Usage](#usage)
 - [Configuration](#configuration)
 - [Inputs](#inputs)
-- [Example Workflow](#example-workflow)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -65,16 +64,18 @@ on:
     - cron: '0 * * * *'  # Run every hour
 
 jobs:
-  health-check:
+  website-health-check:
     runs-on: ubuntu-latest
+    name: License Check
     steps:
-    - name: Check Website Health
-      uses: theritikchoure/websentry@v1
-      with:
-        website-url: 'https://yourwebsite.com'
-        max-retries: 3
-        retry-interval: 5
-        request-timeout: 10
+      - uses: actions/checkout@v2
+      - uses: theritikchoure/websentry@main
+        with:
+          website-url: 'google.com,youtube.com'  # Set the website URL you want to check
+          max-retries: '10'
+          retry-interval: '5s'
+          request-timeout: '10s'
+
 ```
 
 ## Usage
@@ -94,32 +95,8 @@ You can configure Websentry by specifying the following input parameters in your
 | -------------- | ----------------------------------------------- | -------- | --------- |
 | website-url    | The URL of the website to check (e.g., example.com) | true     | -         |
 | max-retries    | Maximum number of retries (default: 3)          | false    | '3'       |
-| retry-interval | Time to wait between retries in seconds (default: 5) | false    | '5'       |
-| request-timeout | Request timeout in seconds (default: 10)      | false    | '10'      |
-
-
-## Example Workflow
-Here's an example GitHub Actions workflow that uses Websentry to check the health of a website:
-
-```yaml
-name: Website Health Check
-
-on:
-  schedule:
-    - cron: '0 * * * *'  # Run every hour
-
-jobs:
-  health-check:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Check Website Health
-      uses: theritikchoure/websentry@v1
-      with:
-        website-url: 'https://yourwebsite.com'
-        max-retries: 3
-        retry-interval: 5
-        request-timeout: 10
-```
+| retry-interval | Time to wait between retries in seconds (default: 5) | false    | '5s'       |
+| request-timeout | Request timeout in seconds (default: 10)      | false    | '10s'      |
 
 ## Contributing
 We welcome contributions from the community! If you'd like to contribute to Websentry, please follow our Contribution Guidelines.

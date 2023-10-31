@@ -1,9 +1,9 @@
 on: push
 
 jobs:
-  license-check:
+  website-health-check:
     runs-on: ubuntu-latest
-    name: License Check
+    name: Website health check
     steps:
       - uses: actions/checkout@v2
       - uses: theritikchoure/websentry@main
