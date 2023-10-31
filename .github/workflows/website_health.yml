@@ -7,3 +7,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: theritikchoure/websentry@main
+        with:
+          website-url: 'google.com'  # Set the website URL you want to check
+          max-retries: 10
+          retry-interval: 5
+          request-timeout: 10
