@@ -9,6 +9,6 @@ jobs:
       - uses: theritikchoure/websentry@main
         with:
           website-url: 'google.com'  # Set the website URL you want to check
-          max-retries: 10
-          retry-interval: 5
-          request-timeout: 10
+          max-retries: '10'
+          retry-interval: '5s'
+          request-timeout: '10s'
