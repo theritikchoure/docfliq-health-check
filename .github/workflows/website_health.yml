@@ -8,7 +8,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: theritikchoure/websentry@main
         with:
-          website-url: 'google.com,docfliq.com'  # Set the website URL you want to check
+          website-url: 'google.com,youtube.com'  # Set the website URL you want to check
           max-retries: '10'
           retry-interval: '5s'
           request-timeout: '10s'
