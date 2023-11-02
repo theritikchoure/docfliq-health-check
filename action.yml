@@ -45,16 +45,16 @@ runs:
       run: go run ${{ github.action_path }}/main.go -site ${{ inputs.website-url }} -maxretries ${{ inputs.max-retries}} -retryinterval ${{ inputs.retry-interval }} -requesttimeout ${{ inputs.request-timeout}}
       shell: bash
       
-    - name: Commit PDF Report
-      run: |
-        echo ${{ inputs.ACCESS_TOKEN}}
-        touch report.pdf
-        git config --global user.email "actions@github.com"
-        git config --global user.name "GitHub Actions"
-        git add report.pdf
-        git commit -m "Add website health report"
-        git push https://${{ inputs.ACCESS_TOKEN }}@github.com/${{ github.repository }} HEAD:main
-      shell: bash
+    # - name: Commit PDF Report
+    #   run: |
+    #     echo ${{ inputs.ACCESS_TOKEN}}
+    #     touch report.pdf
+    #     git config --global user.email "actions@github.com"
+    #     git config --global user.name "GitHub Actions"
+    #     git add report.pdf
+    #     git commit -m "Add website health report"
+    #     git push https://${{ inputs.ACCESS_TOKEN }}@github.com/${{ github.repository }} HEAD:main
+    #   shell: bash
 
     # - name: Deploy Documentation
     #   run: |

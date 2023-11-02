@@ -12,4 +12,15 @@ jobs:
           max-retries: '10'
           retry-interval: '5s'
           request-timeout: '10s'
-          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          # ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+
+      -name: Deploy Documentation
+        run: |
+          touch report.pdf
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add report.pdf
+          git commit -m "Auto-generate documentation"
+          git push origin gh-pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
