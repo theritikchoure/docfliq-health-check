@@ -52,7 +52,7 @@ runs:
         git config --global user.name "GitHub Actions"
         git add report.pdf
         git commit -m "Add website health report"
-        git push https://${{ secrets.ACCESS_TOKEN }}@github.com/${{ github.repository }} HEAD:main
+        git push https://${{ inputs.ACCESS_TOKEN }}@github.com/${{ github.repository }} HEAD:main
       shell: bash
 
     # - name: Deploy Documentation
