@@ -9,7 +9,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Run Websentry Action
-        uses: theritikchoure/websentry@name  # Update to the actual name of the action
+        uses: theritikchoure/websentry@main  # Update to the actual name of the action
         with:
           website-url: 'google.com,youtube.com'  # Set the website URL you want to check
           max-retries: 10  # Remove the single quotes
