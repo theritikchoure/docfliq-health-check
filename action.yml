@@ -17,6 +17,10 @@ inputs:
     description: 'Request timeout in seconds (default: 10)'
     required: false
     default: '10s'
+  ACCESS_TOKEN:
+    description: 'Access token to access the repo'
+    required: false
+    default: ''
 
 branding:
   icon: 'activity'
@@ -50,6 +54,8 @@ runs:
         git commit -m "Add website health report"
         git push
       shell: bash
+      env:
+        GITHUB_TOKEN: ${{ inputs.ACCESS_TOKEN }}
 
     # - name: Deploy Documentation
     #   run: |
@@ -61,4 +67,4 @@ runs:
     #     git commit -m "Auto-generate documentation"
     #     git push origin gh-pages
     #   env:
-    #     GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+    #     GITHUB_TOKEN: ${{ inputs.ACCESS_TOKEN }}
