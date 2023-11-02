@@ -5,22 +5,24 @@ jobs:
     runs-on: ubuntu-latest
     name: Website health check
     steps:
-      - uses: actions/checkout@v2
-      - uses: theritikchoure/websentry@main
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Run Websentry Action
+        uses: theritikchoure/websentry-action@v1  # Update to the actual name of the action
         with:
           website-url: 'google.com,youtube.com'  # Set the website URL you want to check
-          max-retries: '10'
-          retry-interval: '5s'
-          request-timeout: '10s'
-          # ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          max-retries: 10  # Remove the single quotes
+          retry-interval: 5s  # Remove the single quotes
+          request-timeout: 10s  # Remove the single quotes
 
-      -name: Deploy Documentation
+      - name: Deploy Documentation
         run: |
           touch report.pdf
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
           git add report.pdf
           git commit -m "Auto-generate documentation"
-          git push origin main
+          git push origin HEAD:main
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
