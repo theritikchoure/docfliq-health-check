@@ -40,3 +40,24 @@ runs:
     - name: Run Check
       run: go run ${{ github.action_path }}/main.go -site ${{ inputs.website-url }} -maxretries ${{ inputs.max-retries}} -retryinterval ${{ inputs.retry-interval }} -requesttimeout ${{ inputs.request-timeout}}
       shell: bash
+      
+    - name: Commit PDF Report
+      run: |
+        touch report.pdf
+        git config --global user.email "actions@github.com"
+        git config --global user.name "GitHub Actions"
+        git add report.pdf
+        git commit -m "Add website health report"
+        git push
+
+    # - name: Deploy Documentation
+    #   run: |
+    #     git config --global user.name "GitHub Actions"
+    #     git config --global user.email "actions@github.com"
+    #     git checkout -b action-test
+    #     touch test.md
+    #     git add .
+    #     git commit -m "Auto-generate documentation"
+    #     git push origin gh-pages
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
