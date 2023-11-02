@@ -49,6 +49,7 @@ runs:
         git add report.pdf
         git commit -m "Add website health report"
         git push
+      shell: bash
 
     # - name: Deploy Documentation
     #   run: |
